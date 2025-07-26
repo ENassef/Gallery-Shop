@@ -31,7 +31,10 @@ export default function Card({ product }) {
     return (
         <div
             className="group relative border border-gray-200 dark:border-gray-700 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white dark:bg-gray-800"
-            onClick={() => navigate(`/product/${id}`)}
+            onClick={() => navigate(`/product/${id}`) 
+        }
+        data-aos="fade-up"
+        data-aos-duration="1000"
         >
             <div className="relative h-64 overflow-hidden">
                 <img

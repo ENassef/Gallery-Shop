@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./Components/Layout/Layout";
 import ProductDetails from "./Pages/ProductDetails/ProductDetails";
@@ -9,6 +9,8 @@ import CartContextProvider from "./Context/Cart.Context";
 import { Toaster } from "sonner";
 import ProtectedRouter from "./Components/ProtectedRouter/ProtectedRouter";
 import Home from "./Pages/Home/Home";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function App() {
     const router = createBrowserRouter([
@@ -18,7 +20,7 @@ function App() {
             children: [
                 {
                     index: true,
-                    element: <Home/> ,
+                    element: <Home />,
                 },
                 {
                     path: "/product/:id",
@@ -44,12 +46,21 @@ function App() {
         },
     ]);
 
+    useEffect(() => {
+        AOS.init();
+    }, []);
+
     return (
         <>
             <AuthContextProvider>
                 <CartContextProvider>
                     <RouterProvider router={router} />
-                    <Toaster position="top-center" closeButton={true} duration={1000} richColors={true}/>
+                    <Toaster
+                        position="top-center"
+                        closeButton={true}
+                        duration={1000}
+                        richColors={true}
+                    />
                 </CartContextProvider>
             </AuthContextProvider>
         </>
