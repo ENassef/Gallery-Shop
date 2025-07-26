@@ -9,7 +9,7 @@ Gallery Shop is a **modern e-commerce web application** designed to deliver a se
 
 ## 🚀 Demo Link
 
-👉 [Live Demo](https://gallery-shop-beryl-beta.vercel.app/)  
+👉 [Live Demo](https://gallery-shop-seven.vercel.app/)  
 *Explore the live application hosted on Vercel!*
 
 ---
