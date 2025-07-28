@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { debounce } from "lodash";
 import Card from "../../Components/Card/Card";
 import { toast } from "sonner";
 import Cart from "../../Components/Cart/Cart";
+import { ProductContext } from "../../Context/Product.Context";
 
 export default function Home() {
     const [searchTerm, setSearchTerm] = useState("");
@@ -11,9 +12,19 @@ export default function Home() {
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [currentPage, setCurrentPage] = useState(1);
     const [products, setProducts] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
     const productsPerPage = 12;
+
+    const { data, isLoading, isError, error } = useContext(ProductContext);
+
+    useEffect(() => {
+        if (data) {
+            setProducts(data);
+        }
+
+        if (isError) {
+            toast.error(error.message);
+        }
+    }, [data]);
 
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
     useEffect(() => {
@@ -23,24 +34,6 @@ export default function Home() {
         handler();
         return () => handler.cancel();
     }, [searchTerm]);
-
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                setIsLoading(true);
-                setError(null);
-                const response = await axios.get(
-                    "https://fakestoreapi.com/products"
-                );
-                setProducts(response.data);
-            } catch (err) {
-                setError(err.message || "Failed to fetch products");
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchProducts();
-    }, []);
 
     const getFilteredProducts = () => {
         return products.filter((product) => {
