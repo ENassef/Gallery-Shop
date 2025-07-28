@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./Components/Layout/Layout";
-import ProductDetails from "./Pages/ProductDetails/ProductDetails";
-import Login from "./Pages/Login/Login";
-import Register from "./Pages/Register/Register";
 import AuthContextProvider from "./Context/Auth.Context";
 import CartContextProvider from "./Context/Cart.Context";
 import { Toaster } from "sonner";
@@ -14,7 +11,13 @@ import "aos/dist/aos.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ProductContextProvider from "./Context/Product.Context";
-    
+import { lazy, Suspense } from "react";
+
+const ProductDetails = lazy(() =>
+    import("./Pages/ProductDetails/ProductDetails")
+);
+const Login = lazy(() => import("./Pages/Login/Login"));
+const Register = lazy(() => import("./Pages/Register/Register"));
 
 const queryClient = new QueryClient();
 
@@ -30,13 +33,19 @@ function App() {
                 },
                 {
                     path: "/product/:id",
-                    element: <ProductDetails />,
+                    element: (
+                        <Suspense>
+                            <ProductDetails />
+                        </Suspense>
+                    ),
                 },
                 {
                     path: "/login",
                     element: (
                         <ProtectedRouter>
-                            <Login />
+                            <Suspense>
+                                <Login />
+                            </Suspense>
                         </ProtectedRouter>
                     ),
                 },
@@ -44,7 +53,9 @@ function App() {
                     path: "/register",
                     element: (
                         <ProtectedRouter>
-                            <Register />
+                            <Suspense>
+                                <Register />
+                            </Suspense>
                         </ProtectedRouter>
                     ),
                 },
